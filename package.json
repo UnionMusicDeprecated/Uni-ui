@@ -1,0 +1,45 @@
+{
+  "name": "@unionmusic/uni-ui",
+  "version": "0.1.0",
+  "description": "The StyleSheet for UnionMusic",
+  "scss": "src/index.scss",
+  "main": "css/uni.css",
+  "style": "css/uni.css",
+  "scripts": {
+    "build": "npm run build-clean && npm run copy && npm run build-scss && npm run build-scss-minify && npm run build-autoprefix",
+    "build-clean": "rimraf css",
+    "build-scss": "node-sass --output-style expanded --source-map true src/index.scss dist/uni.css",
+    "build-scss-minify": "node-sass --output-style compressed --source-map true src/index.scss dist/uni.min.css",
+    "build-autoprefix": "postcss --use autoprefixer -c postcss.json dist/*.css -d dist/",
+    "copy": "copyfiles -f src/fonts/*.* dist/fonts/",
+    "prepublish": "npm run build",
+    "start": "npm run build-scss --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lhmusic/Uni-ui.git"
+  },
+  "keywords": [
+    "unionmusic",
+    "uni-ui",
+    "union-ui-style",
+    "css",
+    "scss",
+    "framework"
+  ],
+  "author": "Teakowa <git@teakowa.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lhmusic/Uni-ui/issues"
+  },
+  "homepage": "https://github.com/lhmusic/Uni-ui#readme",
+  "devDependencies": {
+    "autoprefixer": "^7.1.1",
+    "copyfiles": "^1.2.0",
+    "eslint-config-o2team": "^0.1.6",
+    "node-sass": "^4.5.3",
+    "postcss-cli": "^4.1.0",
+    "rimraf": "^2.6.1",
+    "vuepress": "^1.2.0"
+  }
+}

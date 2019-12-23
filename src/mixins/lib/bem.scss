@@ -1,0 +1,92 @@
+////
+/// BEM Mixins
+/// @group tools
+/// @since v1.0.0
+/// @from https://github.com/alphasights/paint/blob/90104d69a3c96594b852d186c798a21cd0255c12/styles/tools/_bem.scss
+////
+
+$bem-element-separator: '__';
+$bem-modifier-separator: '--';
+$bem-pseudo-separator: ':';
+
+@function _selector-to-string($selector) {
+  $selector: inspect($selector);
+  $dot-index: str-index($selector, '.');
+  $selector: str-slice($selector, $dot-index, -1);
+
+  @return $selector;
+}
+
+@function _selector-has-modifier($selector) {
+  $selector: _selector-to-string($selector);
+
+  @if str-index($selector, $bem-modifier-separator) or str-index($selector, ':') {
+    @return true;
+  } @else {
+    @return false;
+  }
+}
+
+@function _get-block-name($selector) {
+  $selector: _selector-to-string($selector);
+  $modifier-separator: $bem-pseudo-separator;
+  $combined-selector-position: 0;
+
+  @if str-index($selector, ' ') {
+    $combined-selector-position: str-index($selector, ' ') + 1;
+  }
+
+  @if str-index($selector, $bem-modifier-separator) {
+    $modifier-separator: $bem-modifier-separator;
+  }
+
+  $modifier-start: str-index($selector, $modifier-separator) - 1;
+
+  @if $combined-selector-position < $modifier-start {
+    @return selector-parse(str-slice($selector, $combined-selector-position, $modifier-start));
+  } @else {
+    @return selector-parse(str-slice($selector, 0, $modifier-start));
+  }
+}
+
+@mixin b($block) {
+  .#{$block} {
+    @content;
+  }
+}
+
+@mixin e($elements) {
+  $selector: &;
+
+  @if _selector-has-modifier($selector) {
+    $block: _get-block-name($selector);
+
+    @un-root {
+      @each $element in $elements {
+        #{selector-parse(selector-nest(&, selector-append($block, $bem-element-separator, $element)))} {
+          @content;
+        }
+      }
+    }
+  } @else {
+    @un-root {
+      @each $element in $elements {
+        #{selector-append(&, $bem-element-separator, $element)} {
+          @content;
+        }
+      }
+    }
+  }
+}
+
+@mixin m($modifier) {
+  $class-name: selector-append(&, $bem-modifier-separator, $modifier);
+
+  @if str-index($modifier, $bem-pseudo-separator) == 1 {
+    $class-name: selector-append(&, $modifier);
+  }
+
+  @un-root #{$class-name} {
+    @content;
+  }
+}
