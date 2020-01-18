@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/lhmusic/Uni-ui#readme",
   "devDependencies": {
-    "autoprefixer": "^7.1.1",
+    "autoprefixer": "^9.7.4",
     "copyfiles": "^2.1.1",
     "eslint-config-o2team": "^0.1.6",
     "node-sass": "^4.5.3",
