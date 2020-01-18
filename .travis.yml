@@ -1,0 +1,18 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - 12
+  - 13
+
+cache:
+  directories:
+    - $HOME/.npm
+
+matrix:
+  fast_finish: true
+
+script:
+  - yarn
+  - yarn build
